@@ -1,0 +1,13 @@
+site_name: Learn SiamMask
+site_description: A beginner-friendly path from image tensors to SiamMask
+theme:
+  name: material
+extra_javascript:
+  - javascripts/quiz.js
+extra_css:
+  - stylesheets/quiz.css
+nav:
+  - Home: index.md
+  - Roadmap: roadmap.md
+  - "Stage 1: Image representation": 01-image-representation.md
+  - "Stage 2: NumPy image operations": 02-numpy-image-operations.md
