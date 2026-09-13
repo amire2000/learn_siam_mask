@@ -253,5 +253,6 @@ mean/std values, and verifies the result.
 Prerequisites: [Stage 2: NumPy image operations](02-numpy-image-operations.md)
 and [Stage 3: OpenCV basics](03-opencv-basics.md).
 
-Next: Stage 5 implements a small 2D convolution with NumPy, using image
-tensors in the format you now understand.
+Next: [Stage 5: Convolution manually](05-convolution-manually.md) implements
+a small 2D convolution with NumPy, using image tensors in the format you now
+understand.
