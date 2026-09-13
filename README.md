@@ -8,7 +8,7 @@ convolution to Siamese object tracking and SiamMask.
 This project uses [uv](https://docs.astral.sh/uv/).
 
 ```bash
-git clone git@github-amire:amire2000/siam_mask.git
+git clone git@github-amire:amire2000/learning_siam_mask.git
 cd siam_mask
 uv sync
 ```
