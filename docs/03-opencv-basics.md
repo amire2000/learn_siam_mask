@@ -175,5 +175,5 @@ draws a green box, and saves the result as `output/stage3_annotated.png`.
 
 Prerequisite: [Stage 2: NumPy image operations](02-numpy-image-operations.md).
 
-Next: Stage 4 combines these operations into model preprocessing: resize,
-normalization, mean/std, and HWC → CHW.
+Next: [Stage 4: Preprocessing](04-preprocessing.md) combines these operations
+into model preprocessing: resize, normalization, mean/std, and HWC → CHW.
