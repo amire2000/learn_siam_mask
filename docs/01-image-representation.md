@@ -2,8 +2,11 @@
 
 ## Goal
 
-See a digital image as numbers arranged in a tensor. By the end, `H×W×C`
-will tell you an image's height, width, and number of channels.
+By the end, you will be able to:
+
+- Read an image shape such as `480×640×3`.
+- Explain pixels, color channels, and `uint8` values.
+- Convert image data from `0…255` integers to `0.0…1.0` floats.
 
 ## Intuition
 
@@ -92,7 +95,7 @@ Then change the top-left pixel to yellow. In RGB, yellow is `[255, 255, 0]`.
 
 <form class="quiz" data-answer="b" data-explanation="H counts image rows, so it is the height in pixels.">
   <fieldset>
-    <legend>1. What does the `H` in `(H, W, C)` mean?</legend>
+    <legend>1. What does the <code>H</code> in <code>(H, W, C)</code> mean?</legend>
     <label><input type="radio" name="q1" value="a"> Number of channels</label><br>
     <label><input type="radio" name="q1" value="b"> Image height in pixels</label><br>
     <label><input type="radio" name="q1" value="c"> Pixel value range</label>
@@ -114,7 +117,7 @@ Then change the top-left pixel to yellow. In RGB, yellow is `[255, 255, 0]`.
 
 <form class="quiz" data-answer="c" data-explanation="An unsigned 8-bit integer stores whole numbers from 0 through 255.">
   <fieldset>
-    <legend>3. What is the valid range of a `uint8` pixel value?</legend>
+    <legend>3. What is the valid range of a <code>uint8</code> pixel value?</legend>
     <label><input type="radio" name="q3" value="a"> -1 to 1</label><br>
     <label><input type="radio" name="q3" value="b"> 0.0 to 1.0</label><br>
     <label><input type="radio" name="q3" value="c"> 0 to 255</label>
@@ -125,7 +128,7 @@ Then change the top-left pixel to yellow. In RGB, yellow is `[255, 255, 0]`.
 
 <form class="quiz" data-answer="b" data-explanation="Continuous, consistently scaled float values are convenient for neural-network operations and training.">
   <fieldset>
-    <legend>4. Why do models often use normalized `float32` images?</legend>
+    <legend>4. Why do models often use normalized <code>float32</code> images?</legend>
     <label><input type="radio" name="q4" value="a"> Floats need less memory than `uint8`.</label><br>
     <label><input type="radio" name="q4" value="b"> Training and model operations work naturally with continuous values.</label><br>
     <label><input type="radio" name="q4" value="c"> RGB images cannot be stored as `uint8`.</label>
@@ -144,20 +147,6 @@ Then change the top-left pixel to yellow. In RGB, yellow is `[255, 255, 0]`.
   <button type="button" class="quiz-check">Check answer</button>
   <p class="quiz-result" aria-live="polite"></p>
 </form>
-
-<details>
-  <summary>Show answers and explanations</summary>
-
-  1. **Image height in pixels.** `H` counts rows; `W` counts columns; `C` counts channels.
-
-  2. **1.** A grayscale pixel has one intensity value.
-
-  3. **0 to 255.** `uint8` is an unsigned 8-bit integer.
-
-  4. **Training and model operations work naturally with continuous values.** Normalization also gives inputs a predictable scale. Floats use more memory than `uint8`.
-
-  5. **Channel meaning and order change; the shape stays `(H, W, 3)`.** BGR and RGB both have three channels.
-</details>
 
 ## Prerequisites and next step
 

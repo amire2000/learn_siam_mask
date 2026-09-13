@@ -2,8 +2,12 @@
 
 ## Goal
 
-Manipulate image tensors without loops. You will crop an image, select a
-channel, change its view of the axes, and apply one value per color channel.
+By the end, you will be able to:
+
+- Crop an image and select a single color channel.
+- Reshape an image without changing its number of values.
+- Convert HWC image data to CHW.
+- Apply one value per channel with broadcasting.
 
 ## Intuition
 
@@ -112,7 +116,7 @@ Use the example image to do the following before looking at its output:
 
 <form class="quiz" data-answer="b" data-explanation="The first image axis is the row axis, which is the vertical y coordinate.">
   <fieldset>
-    <legend>1. In `image[y, x, c]`, what does `y` select?</legend>
+    <legend>1. In <code>image[y, x, c]</code>, what does <code>y</code> select?</legend>
     <label><input type="radio" name="q1" value="a"> The color channel</label><br>
     <label><input type="radio" name="q1" value="b"> The row, from top to bottom</label><br>
     <label><input type="radio" name="q1" value="c"> The column, from left to right</label>
@@ -123,10 +127,10 @@ Use the example image to do the following before looking at its output:
 
 <form class="quiz" data-answer="c" data-explanation="The slice end is excluded: rows 1 and 2, columns 2, 3, and 4 give height 2 and width 3.">
   <fieldset>
-    <legend>2. What is the shape of `image[1:3, 2:5]` from an RGB image?</legend>
-    <label><input type="radio" name="q2" value="a"> `(3, 2, 3)`</label><br>
-    <label><input type="radio" name="q2" value="b"> `(2, 3)`</label><br>
-    <label><input type="radio" name="q2" value="c"> `(2, 3, 3)`</label>
+    <legend>2. What is the shape of <code>image[1:3, 2:5]</code> from an RGB image?</legend>
+    <label><input type="radio" name="q2" value="a"> <code>(3, 2, 3)</code></label><br>
+    <label><input type="radio" name="q2" value="b"> <code>(2, 3)</code></label><br>
+    <label><input type="radio" name="q2" value="c"> <code>(2, 3, 3)</code></label>
   </fieldset>
   <button type="button" class="quiz-check">Check answer</button>
   <p class="quiz-result" aria-live="polite"></p>
@@ -135,9 +139,9 @@ Use the example image to do the following before looking at its output:
 <form class="quiz" data-answer="a" data-explanation="`transpose(2, 0, 1)` moves the channel axis from last to first.">
   <fieldset>
     <legend>3. Which operation converts HWC image data to CHW?</legend>
-    <label><input type="radio" name="q3" value="a"> `image.transpose(2, 0, 1)`</label><br>
-    <label><input type="radio" name="q3" value="b"> `image.reshape(3, -1)`</label><br>
-    <label><input type="radio" name="q3" value="c"> `image[:, :, 0]`</label>
+    <label><input type="radio" name="q3" value="a"> <code>image.transpose(2, 0, 1)</code></label><br>
+    <label><input type="radio" name="q3" value="b"> <code>image.reshape(3, -1)</code></label><br>
+    <label><input type="radio" name="q3" value="c"> <code>image[:, :, 0]</code></label>
   </fieldset>
   <button type="button" class="quiz-check">Check answer</button>
   <p class="quiz-result" aria-live="polite"></p>
@@ -145,7 +149,7 @@ Use the example image to do the following before looking at its output:
 
 <form class="quiz" data-answer="b" data-explanation="The vector has one value for each final-axis channel, so NumPy repeats it across height and width.">
   <fieldset>
-    <legend>4. Why can an HWC RGB image add a shape `(3,)` vector?</legend>
+    <legend>4. Why can an HWC RGB image add a shape <code>(3,)</code> vector?</legend>
     <label><input type="radio" name="q4" value="a"> NumPy first converts the image to grayscale.</label><br>
     <label><input type="radio" name="q4" value="b"> Broadcasting applies the three values to every pixel's channels.</label><br>
     <label><input type="radio" name="q4" value="c"> `uint8` arrays always have three dimensions.</label>
@@ -156,28 +160,14 @@ Use the example image to do the following before looking at its output:
 
 <form class="quiz" data-answer="c" data-explanation="A `uint8` value cannot represent negative values or values above 255, so use `float32` before preprocessing arithmetic.">
   <fieldset>
-    <legend>5. Why convert `uint8` data to `float32` before normalization?</legend>
-    <label><input type="radio" name="q5" value="a"> `uint8` has no image shape.</label><br>
-    <label><input type="radio" name="q5" value="b"> Only `float32` can have three channels.</label><br>
+    <legend>5. Why convert <code>uint8</code> data to <code>float32</code> before normalization?</legend>
+    <label><input type="radio" name="q5" value="a"> <code>uint8</code> has no image shape.</label><br>
+    <label><input type="radio" name="q5" value="b"> Only <code>float32</code> can have three channels.</label><br>
     <label><input type="radio" name="q5" value="c"> It prevents integer overflow and supports fractional values.</label>
   </fieldset>
   <button type="button" class="quiz-check">Check answer</button>
   <p class="quiz-result" aria-live="polite"></p>
 </form>
-
-<details>
-  <summary>Show answers and explanations</summary>
-
-  1. **The row, from top to bottom.** Array indexing is `y` then `x`.
-
-  2. **`(2, 3, 3)`.** Slices exclude their end, and all three channels stay.
-
-  3. **`image.transpose(2, 0, 1)`.** It orders the axes as channel, height, width.
-
-  4. **Broadcasting applies the three values to every pixel's channels.** The last image axis has length three.
-
-  5. **It prevents integer overflow and supports fractional values.** Normalized data commonly contains values such as `0.5`.
-</details>
 
 ## Prerequisites and next step
 

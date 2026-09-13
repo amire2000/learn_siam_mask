@@ -22,6 +22,7 @@ When adding a topic:
 6. Add 3-5 review questions.
 7. Link prerequisites.
 8. Link the next topic.
+9. Start with a short “By the end, you will be able to” list.
 
 Do not introduce advanced concepts before their prerequisites.
 
@@ -56,5 +57,6 @@ See:
 
 - 5 questions
 - difficulty: beginner -> intermediate
-- answers hidden at bottom
-- explain why each answer is correct
+- multiple-choice options
+- a clear “Check answer” button
+- show a green check or red cross and explain the answer immediately
