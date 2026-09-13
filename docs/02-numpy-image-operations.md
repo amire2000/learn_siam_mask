@@ -173,5 +173,5 @@ Use the example image to do the following before looking at its output:
 
 Prerequisite: [Stage 1: Image representation](01-image-representation.md).
 
-Next: Stage 3 will use OpenCV to load, resize, convert, and draw on real
-images.
+Next: [Stage 3: OpenCV basics](03-opencv-basics.md) uses OpenCV to load,
+resize, convert, and draw on real images.

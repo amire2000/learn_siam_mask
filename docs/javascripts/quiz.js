@@ -8,11 +8,13 @@ document.querySelectorAll(".quiz").forEach((quiz) => {
       result.textContent = "Choose an answer first.";
     } else {
       const correct = answer.value === quiz.dataset.answer;
-      const correctOption = quiz.querySelector(
+      const correctLabel = quiz.querySelector(
         `input[value="${quiz.dataset.answer}"]`,
-      ).parentElement.textContent.trim();
+      ).parentElement.cloneNode(true);
+      correctLabel.querySelector("input").remove();
+      const correctOption = correctLabel.innerHTML.trim();
       result.className = `quiz-result ${correct ? "quiz-correct" : "quiz-incorrect"}`;
-      result.textContent = correct
+      result.innerHTML = correct
         ? `Correct. ${quiz.dataset.explanation}`
         : `Not quite. Correct answer: ${correctOption}. ${quiz.dataset.explanation}`;
     }

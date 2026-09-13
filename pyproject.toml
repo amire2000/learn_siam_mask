@@ -6,4 +6,5 @@ dependencies = [
     "mkdocs>=1.6.1",
     "mkdocs-material>=9.7.7",
     "numpy>=2.4.6",
+    "opencv-python>=5.0.0.93",
 ]

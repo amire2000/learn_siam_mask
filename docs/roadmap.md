@@ -23,7 +23,7 @@ major tensor during inference.
 | --- | --- | --- |
 | 1 | [Image representation](01-image-representation.md) | Understand `H×W×C`, pixels, channels, dtype, and ranges. |
 | 2 | [NumPy image operations](02-numpy-image-operations.md) | Slice, crop, reshape, transpose, and broadcast. |
-| 3 | OpenCV basics | Load, display, resize, convert color, and draw a bounding box. |
+| 3 | [OpenCV basics](03-opencv-basics.md) | Load, display, resize, convert color, and draw a bounding box. |
 | 4 | Preprocessing | Resize, normalize, use mean/std, and convert HWC → CHW. |
 | 5 | Convolution manually | Implement a small 2D convolution with NumPy. |
 | 6 | Filters as convolution | Use blur, sharpen, and edge-detection filters. |
