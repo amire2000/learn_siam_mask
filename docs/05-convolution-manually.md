@@ -202,4 +202,5 @@ they do the same calculation.
 Prerequisites: [Stage 1: Image representation](01-image-representation.md)
 and [Stage 2: NumPy image operations](02-numpy-image-operations.md).
 
-Next: Stage 6 gives kernels useful jobs: blur, sharpen, and edge detection.
+Next: [Stage 6: Filters as convolution](06-filters-as-convolution.md) gives
+kernels useful jobs: blur, sharpen, and edge detection.

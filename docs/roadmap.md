@@ -26,7 +26,7 @@ major tensor during inference.
 | 3 | [OpenCV basics](03-opencv-basics.md) | Load, display, resize, convert color, and draw a bounding box. |
 | 4 | [Preprocessing](04-preprocessing.md) | Resize, normalize, use mean/std, and convert HWC → CHW. |
 | 5 | [Convolution manually](05-convolution-manually.md) | Implement a small 2D convolution with NumPy. |
-| 6 | Filters as convolution | Use blur, sharpen, and edge-detection filters. |
+| 6 | [Filters as convolution](06-filters-as-convolution.md) | Use blur, sharpen, and edge-detection filters. |
 | 7 | Multi-channel convolution | Turn RGB input and several kernels into feature maps. |
 | 8 | Stride and padding | Explain why feature maps shrink or stay the same size. |
 | 9 | Feature maps | Visualize what simple filters detect. |

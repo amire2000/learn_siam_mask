@@ -17,3 +17,4 @@ nav:
   - "Stage 3: OpenCV basics": 03-opencv-basics.md
   - "Stage 4: Preprocessing": 04-preprocessing.md
   - "Stage 5: Convolution manually": 05-convolution-manually.md
+  - "Stage 6: Filters as convolution": 06-filters-as-convolution.md

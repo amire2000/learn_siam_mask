@@ -71,31 +71,56 @@ mean/std normalization used by many pretrained networks.
 
 ## 3. Mean and standard deviation
 
-For one scaled pixel value `x`, mean/std normalization is:
+### The simple idea first
+
+Imagine that a model has practised with a huge collection of training images.
+For each color channel, we can ask two simple questions:
+
+| Question | Name | Plain meaning |
+| --- | --- | --- |
+| What value is usual? | **mean** | The average value. |
+| How far from usual are values normally? | **standard deviation** (`std`) | The usual amount of wiggle. |
+
+Mean/std normalization turns a pixel into an answer to this question:
+
+> Is this pixel darker or brighter than usual, and by how many usual-sized steps?
+
+After normalization:
+
+- A value near `0` is typical.
+- A negative value is below the usual value.
+- A positive value is above the usual value.
+- A value of `2` means “about two usual-sized steps above average.”
+
+We write the calculation as:
 
 `z = (x - μ) / σ`
 
-where:
-
-- `μ` (mu) is the mean: the average channel value in the training data.
-- `σ` (sigma) is the standard deviation: how much that channel normally varies.
-- `z` is the normalized value.
+where `x` is one scaled pixel value, `μ` (say “mu”) is the mean, `σ` (say
+“sigma”) is the standard deviation, and `z` is the final normalized value.
 
 ![A value measured relative to the mean and standard deviation](assets/mean-standard-deviation.svg)
 
-The curve is a useful mental model: values near `μ` are typical, while values
-far to the left or right are less typical. The red point is `1.5σ` above the
-mean, so its normalized value is `z = 1.5`. Image pixels do not need to form a
-perfect bell curve for this transformation to be useful; it still centers and
-scales the values consistently.
+The curve is a picture of the same idea: values near `μ` are usual, while
+values farther away are less usual. The red point is `1.5σ` above the mean, so
+its normalized value is `1.5`.
 
-Think of `z` as “how far is this value from typical, measured in typical
-variation?” If `x = 0.8`, `μ = 0.5`, and `σ = 0.2`, then:
+### One pixel, in two easy steps
 
-`z = (0.8 - 0.5) / 0.2 = 1.5`
+Suppose a scaled pixel value is `x = 0.8`. The training images have mean
+`μ = 0.5` and standard deviation `σ = 0.2`.
 
-So this channel value is 1.5 standard deviations above its training-data
-average.
+```text
+Step 1: subtract what is usual
+0.8 - 0.5 = 0.3
+
+Step 2: measure that difference in usual-sized steps
+0.3 / 0.2 = 1.5
+```
+
+The answer is `1.5`: this pixel is brighter than average by one and a half
+usual-sized steps. Notice that we did **not** make the result stay between 0
+and 1. Negative values and values larger than 1 are normal after this step.
 
 Here is the same idea with several values when `μ = 0.5` and `σ = 0.2`:
 
@@ -106,36 +131,40 @@ Here is the same idea with several values when `μ = 0.5` and `σ = 0.2`:
 | `0.7` | `(0.7 - 0.5) / 0.2` | `1.0` | One typical variation above average |
 | `0.8` | `(0.8 - 0.5) / 0.2` | `1.5` | One and a half typical variations above average |
 
-### Where do mean and standard deviation come from?
+### Where do these two numbers come from?
 
-They are calculated once from the **training dataset**, separately for each
-color channel—not from the one camera frame currently being processed. For a
-channel with `N` scaled pixel values `x₁, x₂, …, xₙ`:
+They are calculated once from the **training dataset**: the large collection
+of images used to teach the model. They are calculated separately for red,
+green, and blue. They do **not** come from the one camera frame you are using
+right now.
 
-`μ = (x₁ + x₂ + … + xₙ) / N`
+The mean is ordinary average math:
 
-`σ = sqrt(((x₁ - μ)² + (x₂ - μ)² + … + (xₙ - μ)²) / N)`
+`mean = (add all channel values) / (number of channel values)`
 
-The mean is the average. The standard deviation is the square root of the
-average squared distance from that average. Squaring prevents positive and
-negative differences from cancelling each other out.
+To find standard deviation, a program does this:
 
-In practice, you normally do **not** recalculate these values at inference.
-Use the values published with the trained model, because the model learned
-from inputs normalized with that exact recipe.
+1. Find the mean.
+2. Find each value's distance from the mean.
+3. Square the distances, so below-average and above-average values do not cancel out.
+4. Average those squared distances.
+5. Take the square root to return to the original value scale.
+
+You do not need to calculate this by hand when running a model. Use the mean
+and std values published with that model, because it learned using that exact
+recipe.
 
 ### Why subtract the mean?
 
-Raw scaled image values are positive and often cluster away from zero. After
-subtracting the mean, a typical training image is centered around zero. The
-network can learn its weights around a predictable reference point instead of
-having to compensate for a large positive offset.
+Raw scaled image values are positive: they sit between 0 and 1. Subtracting
+the mean moves the usual value to zero. That gives the network a predictable
+middle point instead of making it first work around a positive offset.
 
 ### Why divide by the standard deviation?
 
-Different channels can have different natural variation. Dividing by `σ`
-makes a one-standard-deviation change equal to roughly `1` in every channel.
-This gives the model inputs with comparable scales.
+Different channels can have different amounts of usual wiggle. Dividing by
+`σ` makes one usual-sized change become roughly `1` in every channel. This
+puts the channels on comparable scales.
 
 ### Mean/std is per channel
 
@@ -165,6 +194,28 @@ Many Python deep-learning models expect a single image in CHW order:
 chw = normalized.transpose(2, 0, 1)
 ```
 
+`transpose(2, 0, 1)` changes axis order; it does not change the pixel values.
+The numbers say which old axis becomes each new axis:
+
+```text
+new axis 0 ← old axis 2  → channels
+new axis 1 ← old axis 0  → height
+new axis 2 ← old axis 1  → width
+```
+
+For example, `(100, 200, 3)` becomes `(3, 100, 200)`. The same pixel can be
+read with either ordering:
+
+```python
+normalized[y, x, c] == chw[c, y, x]
+```
+
+To convert CHW data back to HWC, reverse the axis order:
+
+```python
+hwc = chw.transpose(1, 2, 0)
+```
+
 For model batches, add a batch axis to get NCHW:
 
 ```python
@@ -172,6 +223,18 @@ batch = chw[None, :, :, :]  # shape: (1, 3, H, W)
 ```
 
 `N` means the number of images. Here there is one image, so `N = 1`.
+`None` creates this new first axis; the shorter `chw[None]` means the same
+thing.
+
+To make a batch of eight images, stack eight CHW tensors on that new axis:
+
+```python
+one_image_batch = chw[None]                    # shape: (1, 3, H, W)
+eight_image_batch = np.stack([chw] * 8, axis=0)  # shape: (8, 3, H, W)
+```
+
+The example repeats `chw` only to show the shape. In real inference, each
+item is a different preprocessed image.
 
 ## Runnable example
 

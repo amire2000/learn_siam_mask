@@ -37,6 +37,15 @@ The reader knows:
 
 The reader is learning deep learning architecture.
 
+## Teaching style
+
+Explain concepts as if teaching a curious 15-year-old student:
+
+- Start with plain-language intuition and concrete examples.
+- Introduce only the mathematics needed for the current topic.
+- Explain every symbol and connect each formula to the intuition.
+- Prefer short steps over assumed deep-learning knowledge.
+
 ## Site
 
 Documentation lives in `docs/`.
